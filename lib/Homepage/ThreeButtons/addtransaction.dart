@@ -8,6 +8,8 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_database/firebase_database.dart';
+import '../../PieChart/piechart.dart';
+import '../../Services/addProduct.dart';
 import '../../Services/sms_services.dart';
 
 class AddTransaction extends StatefulWidget {
@@ -67,7 +69,8 @@ class _AddDetailsState extends State<AddDetails> {
   @override
   Widget build(BuildContext context) {
     final dateprovider = Provider.of<DateAtAddTransactionProvider>(context);
-    Future<void> addTransaction() async {
+
+    Future<void> addTransaction(String category) async {
       String type = dropdowninitval;
       String description = descriptionController.text;
       DateTime dt = dateprovider.dateTime;
@@ -87,7 +90,7 @@ class _AddDetailsState extends State<AddDetails> {
           'transactionType': (type == 'INCOME' ? 'credited' : 'debited'),
           'time': date,
           'receiverName': description,
-          'referenceNumber': amount,
+          'category': category,
         });
         print("Transaction added successfully!");
       } catch (error) {
@@ -279,7 +282,10 @@ class _AddDetailsState extends State<AddDetails> {
                     minimumSize: const Size(100, 40),
                     backgroundColor: Colors.black),
                 onPressed: () async {
-                  await addTransaction();
+                  String category =
+                      await addNewProduct(descriptionController.text);
+                  await addTransaction(category);
+                  // await addProductCategory(category, double.parse(amountController.text));
                 },
                 child: const Text(
                   "Add Transaction",

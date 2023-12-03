@@ -34,12 +34,12 @@ class _PieHomeState extends State<PieHome> {
             ),
             const Expanded(child: PChart()),
             const Text("Stationary : ----------"),
-            const Text("Stationary : ----------"),
-            const Text("Stationary : ----------"),
-            const Text("Stationary : ----------"),
-            const Text("Stationary : ----------"),
-            const Text("Stationary : ----------"),
-            const Text("Stationary : ----------"),
+            const Text("Home : ----------"),
+            const Text("Food : ----------"),
+            const Text("Hygiene : ----------"),
+            const Text("Clothes : ----------"),
+            const Text("Others : ----------"),
+      
             SizedBox(height: 100),
           ],
         ));

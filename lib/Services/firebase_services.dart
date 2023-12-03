@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:fintrack_s/Services/sms_services.dart';
 import 'package:fintrack_s/components/constants.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -145,3 +147,23 @@ Future<List<BankTransaction>> fetchMonthlyTransactions(String month) async {
     throw Exception("Failed to fetch transactions");
   }
 }
+
+// Future addProductCategory(String category, double amount) async {
+//   DatabaseReference userTransactionsRef = FirebaseDatabase.instance
+//       .ref()
+//       .child('users/$usrId')
+//       .child('categories/$category');
+//   DatabaseEvent databaseEvent = await userTransactionsRef.once();
+//   DataSnapshot dataSnapshot = databaseEvent.snapshot;
+
+//   try {
+//     if (dataSnapshot.value != null) {
+//       await userTransactionsRef.set(amount + (dataSnapshot.value as int));
+//     } else {
+//       await userTransactionsRef.set(amount);
+//     }
+//   } catch (error) {
+//     print("Error adding category amount: $error");
+//     throw Exception("Failed to add category amount");
+//   }
+// }

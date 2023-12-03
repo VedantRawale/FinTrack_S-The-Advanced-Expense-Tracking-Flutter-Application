@@ -4,7 +4,9 @@ import '../../../components/already_have_an_account_acheck.dart';
 import '../../../components/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../Services/firebase_services.dart';
+import '../../Services/sms_services.dart';
 import '../../Signup/signup_screen.dart';
+import '../../components/smsParsingScreen.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({
@@ -32,11 +34,12 @@ class _LoginFormState extends State<LoginForm> {
         return const BottomNavBar();
       }));
 
-      // await Navigator.pushReplacement(
-      //     context,
-      //     MaterialPageRoute(
-      //         builder: (context) =>
-      //             const SmsScanningScreen(rescanAndSaveSms: rescanAndSaveSms)));
+      await Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  const SmsScanningScreen(rescanAndSaveSms: rescanAndSaveSms)));
+                  
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');

@@ -95,13 +95,25 @@ class TransList extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Text(
-                    "\u20B9 ${filteredTransactions[index].amount}",
-                    style: TextStyle(
-                        color: transtypeprovider.debited
-                            ? Colors.red
-                            : Colors.green),
-                  ),
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                            "\u20B9 ${filteredTransactions[index].amount}",),
+                        const SizedBox(height: 5),
+                        Text(
+                          filteredTransactions[index].category,
+                          style: const TextStyle(color: Colors.brown),
+                        ),
+                      ],
+                    ),
+                  // Text(
+                  //   "\u20B9 ${filteredTransactions[index].amount}",
+                  //   style: TextStyle(
+                  //       color: transtypeprovider.debited
+                  //           ? Colors.red
+                  //           : Colors.green),
+                  // ),
                   const SizedBox(width: 10),
                 ],
               ));

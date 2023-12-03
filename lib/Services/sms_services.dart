@@ -12,6 +12,7 @@ double netCredited = 0;
 Map<int, double> monthwiseNetCredited = {};
 Map<int, double> monthwiseNetDebited = {};
 Map<int, List<Map<String, dynamic>>> monthwiseTransactions = {};
+String defcat = "Others";
 
 Future<void> rescanAndSaveSms() async {
   Telephony telephony = Telephony.instance;
@@ -64,7 +65,7 @@ Future<void> rescanAndSaveSms() async {
           'transactionType': transaction.transactionType,
           'time': transaction.time,
           'receiverName': transaction.receiverName,
-          'referenceNumber': transaction.referenceNumber,
+          'category': defcat,
         });
         //-------------previous------
         // saveTransactionData(transaction);
@@ -80,21 +81,21 @@ class BankTransaction {
   String transactionType;
   String time;
   String receiverName;
-  String referenceNumber;
+  String category;
   BankTransaction(
       {required this.bankName,
       required this.amount,
       required this.transactionType,
       required this.time,
       required this.receiverName,
-      required this.referenceNumber});
+      required this.category});
 
   factory BankTransaction.fromMap(Map<dynamic, dynamic> map) {
     return BankTransaction(
       amount: map['amount'] ?? '0.0',
       bankName: map['bankName'] ?? '',
       receiverName: map['receiverName'] ?? '',
-      referenceNumber: map['referenceNumber'] ?? '',
+      category: map['category'] ?? '',
       time: map['time'] ?? '',
       transactionType: map['transactionType'] ?? '',
     );
@@ -141,36 +142,6 @@ Future saveTransaction() async {
   }
 }
 
-// void saveTransactionData(BankTransaction transaction) async {
-//   String month = transaction.time.substring(2, 5);
-//   num mm = monthMap[month] ?? 0;
-//   DatabaseReference transactionRef = FirebaseDatabase.instance
-//       .ref()
-//       .child('users/$usrId')
-//       .child('transactions');
-//   try {
-//     await transactionRef.child(mm.toString()).push().set({
-//       'bankName': transaction.bankName,
-//       'amount': transaction.amount,
-//       'transactionType': transaction.transactionType,
-//       'time': transaction.time,
-//       'receiverName': transaction.receiverName,
-//       'referenceNumber': transaction.referenceNumber,
-//     });
-//     await transactionRef.child(mm.toString()).set({
-//       'netCredited': monthwiseNetCredited[mm],
-//       'netDebited': monthwiseNetDebited[mm],
-//     });
-//     await transactionRef.set({
-//       'netCredited': netCredited,
-//       'netDebited': netDebited,
-//     });
-//     print('Transaction data saved successfully.');
-//   } catch (error) {
-//     print('Error saving transaction data: $error');
-//   }
-// }
-
 BankTransaction? parseSms(String sms) {
   final RegExp credRegex = RegExp(
     r"Dear SBI UPI User, ur A/c([A-Za-z0-9]+) (?<typecred>[A-Za-z]+) by Rs([+-]?(?:\d+)?(?:\.?\d*))"
@@ -186,7 +157,7 @@ BankTransaction? parseSms(String sms) {
       transactionType: 'credited',
       amount: credmatch.group(3) ?? "0.0",
       time: credmatch.group(4) ?? "",
-      referenceNumber: credmatch.group(5) ?? "",
+      category: credmatch.group(5) ?? "",
       bankName: 'SBI',
     );
   }
@@ -208,7 +179,7 @@ BankTransaction? parseSms(String sms) {
       amount: debmatch.group(3) ?? "0.0",
       time: debmatch.group(4) ?? "",
       receiverName: debmatch.group(5) ?? "",
-      referenceNumber: debmatch.group(6) ?? "",
+      category: debmatch.group(6) ?? "",
       bankName: 'SBI',
     );
   } else {
@@ -217,31 +188,3 @@ BankTransaction? parseSms(String sms) {
 }
 
 
-
-// BankTransaction? parseSms(String sms) {
-  
-//   final RegExp debregex = RegExp(
-//     r"Dear UPI user A/C ([A-Za-z0-9]+) ([A-Za-z]+) by ([+-]?(?:\d+)?(?:\.?\d*))"
-//     r"(?: on date ([A-Za-z0-9]+))?"
-//     r"(?: trf to ([A-Za-z0-9]+(?: [A-Za-z]+)*)(?: Refno (\d+)))"
-//     r"\.(?: If not u\? call 1800111109)?\.?(?: -([A-Za-z]+))?",
-//     caseSensitive: false,
-//   );
- 
-
-//   // Match regex against input
-//   final RegExpMatch? match = debregex.firstMatch(sms);
-
-//   if (match != null) {
-//     return BankTransaction(
-//       transactionType: match.group(2) ?? "",
-//       amount: match.group(3) ?? "0.0",
-//       time: match.group(4) ?? "",
-//       receiverName: match.group(5) ?? "",
-//       referenceNumber: match.group(6) ?? "",
-//       bankName: 'SBI',
-//     );
-//   } else {
-//     return null;
-//   }
-// }
