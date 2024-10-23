@@ -1,5 +1,5 @@
 import 'package:fintrack_s/Homepage/netexpense.dart';
-import 'package:fintrack_s/Homepage/recentTransactions.dart';
+import 'package:fintrack_s/Homepage/recenttransactions.dart';
 import 'package:fintrack_s/Homepage/ThreeButtons/threebuttons.dart';
 import 'package:fintrack_s/Provider/navbarprovider.dart';
 import 'package:fintrack_s/components/constants.dart';
