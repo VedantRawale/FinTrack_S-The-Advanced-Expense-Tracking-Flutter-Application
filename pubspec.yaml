@@ -66,6 +66,8 @@ dev_dependencies:
   animated_text_kit: ^4.2.2
   fl_chart: ^0.62.0
   table_calendar: ^3.0.8
+  firebase_core_web: ^2.10.0
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

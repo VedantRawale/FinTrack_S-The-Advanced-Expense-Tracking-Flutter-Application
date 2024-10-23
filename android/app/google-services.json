@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "13150244201",
+    "firebase_url": "https://fintrack-s-default-rtdb.firebaseio.com",
+    "project_id": "fintrack-s",
+    "storage_bucket": "fintrack-s.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:13150244201:android:ce4e6995b8df5784e481f8",
+        "android_client_info": {
+          "package_name": "com.vedant.fintrack_s"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBivjrVdOxNXVmN5mz-RWmyAs_5HdCU1OI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

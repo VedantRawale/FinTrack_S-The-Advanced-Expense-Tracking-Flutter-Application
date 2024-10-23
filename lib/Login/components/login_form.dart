@@ -7,6 +7,7 @@ import '../../Services/firebase_services.dart';
 import '../../Services/sms_services.dart';
 import '../../Signup/signup_screen.dart';
 import '../../components/smsParsingScreen.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class LoginForm extends StatefulWidget {
   const LoginForm({
@@ -34,12 +35,13 @@ class _LoginFormState extends State<LoginForm> {
         return const BottomNavBar();
       }));
 
-      await Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  const SmsScanningScreen(rescanAndSaveSms: rescanAndSaveSms)));
-                  
+      if (!kIsWeb) {
+        await Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const SmsScanningScreen(
+                    rescanAndSaveSms: rescanAndSaveSms)));
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
+import 'package:fintrack_s/firebase_options.dart';
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'high_importance_channel', 'High Importance Notification',
@@ -18,7 +19,9 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+  options: DefaultFirebaseOptions.currentPlatform,
+);
   runApp(const MyApp());
 }
 
@@ -32,9 +35,13 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => TransactionProvider()),
         ChangeNotifierProvider(create: (_) => ExpenseProvider()),
-        ChangeNotifierProvider(create: (_) => TransacTypeProvider(),),
+        ChangeNotifierProvider(
+          create: (_) => TransacTypeProvider(),
+        ),
         ChangeNotifierProvider(create: (_) => NavBarProvider()),
-        ChangeNotifierProvider(create: (_) => DateAtAddTransactionProvider(),),
+        ChangeNotifierProvider(
+          create: (_) => DateAtAddTransactionProvider(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
