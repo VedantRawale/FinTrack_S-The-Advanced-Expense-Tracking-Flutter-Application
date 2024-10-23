@@ -1,59 +1,35 @@
-name: On Website Deploy
+name: Build Flutter Web App
+
 on:
   push:
     branches:
-      - "main"
+      - main
+  pull_request:
+    branches:
+      - main
+
 jobs:
-  build_and_deploy_web:
-    name: Build & Deploy Flutter to Web
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Install FVM and Flutter 3.7.7
+      - name: Set up Flutter
         run: |
-          # Install Dart SDK
-          sudo apt-get update
-          sudo apt-get install -y dart
+          wget https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.7.7-stable.tar.xz
+          tar xf flutter_linux_3.7.7-stable.tar.xz
+          echo "$PWD/flutter/bin" >> $GITHUB_PATH
 
-          # Install FVM globally
-          dart pub global activate fvm
+      - name: Install dependencies
+        run: flutter pub get
 
-          # Set the PATH for FVM
-          export PATH="$PATH":"$HOME/.pub-cache/bin"
+      - name: Build web app
+        run: flutter build web --release
 
-          # Create a new directory for the Flutter SDK
-          mkdir -p $GITHUB_WORKSPACE/flutter
-
-          # Install Flutter 3.7.7 using FVM
-          fvm install 3.7.7
-
-          # Set the Flutter version to use
-          fvm use 3.7.7
-
-          # Add FVM's Flutter to the PATH
-          export PATH="$PATH:$GITHUB_WORKSPACE/flutter/.fvm/flutter/bin"
-
-          # Verify Flutter installation
-          flutter doctor
-
-      - name: 🌍 Enable Web
-        run: |
-          fvm flutter config --enable-web
-
-      - name: 📦 Get packages
-        run: |
-          fvm flutter pub get
-
-      - name: 🏭 Build Web Application
-        run: |
-          fvm flutter build web --release
-
-      - name: Make copy of artifacts
-        run: |
-          chmod u+x "${GITHUB_WORKSPACE}/createandcopytofolder.sh"
-          bash "${GITHUB_WORKSPACE}/createandcopytofolder.sh"
-
-      - uses: stefanzweifel/git-auto-commit-action@v4
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
         with:
-          commit_message: Commit the artifacts.
+          name: web-build
+          path: artifacts/web
