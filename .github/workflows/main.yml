@@ -10,23 +10,44 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install Flutter 3.7.7
+      - name: Install FVM and Flutter 3.7.7
         run: |
-          # Clone the Flutter repository and checkout version 3.7.7
-          git clone https://github.com/flutter/flutter.git
-          cd flutter
-          git checkout 3.7.7  # Checkout specific version tag for Flutter 3.7.7
-          export PATH="$PATH:$(pwd)/bin"  # Add Flutter to PATH
-          flutter doctor  # Check Flutter installation
+          # Install Dart SDK
+          sudo apt-get update
+          sudo apt-get install -y dart
+
+          # Install FVM globally
+          dart pub global activate fvm
+
+          # Set the PATH for FVM
+          export PATH="$PATH":"$HOME/.pub-cache/bin"
+
+          # Create a new directory for the Flutter SDK
+          mkdir -p $GITHUB_WORKSPACE/flutter
+
+          # Install Flutter 3.7.7 using FVM
+          fvm install 3.7.7
+
+          # Set the Flutter version to use
+          fvm use 3.7.7
+
+          # Add FVM's Flutter to the PATH
+          export PATH="$PATH:$GITHUB_WORKSPACE/flutter/.fvm/flutter/bin"
+
+          # Verify Flutter installation
+          flutter doctor
 
       - name: 🌍 Enable Web
-        run: flutter config --enable-web
+        run: |
+          fvm flutter config --enable-web
 
       - name: 📦 Get packages
-        run: flutter pub get
+        run: |
+          fvm flutter pub get
 
       - name: 🏭 Build Web Application
-        run: flutter build web --release
+        run: |
+          fvm flutter build web --release
 
       - name: Make copy of artifacts
         run: |
