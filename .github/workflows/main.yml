@@ -13,9 +13,9 @@ jobs:
       - name: Install Flutter 3.7.7
         run: |
           # Clone the Flutter repository and checkout version 3.7.7
-          git clone https://github.com/flutter/flutter.git -b stable --depth 1
+          git clone https://github.com/flutter/flutter.git
           cd flutter
-          git checkout 2ad6cd72c0  # Checkout specific commit for version 3.7.7
+          git checkout 3.7.7  # Checkout specific version tag for Flutter 3.7.7
           export PATH="$PATH:$(pwd)/bin"  # Add Flutter to PATH
           flutter doctor  # Check Flutter installation
 
