@@ -1,20 +1,23 @@
 name: On Website Deploy
-"on":
+on:
   push:
-    # (1)
     branches:
       - "main"
 jobs:
   build_and_deploy_web:
     name: Build & Deploy Flutter to Web
     runs-on: ubuntu-latest
-    # (2)
     steps:
       - uses: actions/checkout@v2
 
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: "stable"
+      - name: Install Flutter 3.7.7
+        run: |
+          # Clone the Flutter repository and checkout version 3.7.7
+          git clone https://github.com/flutter/flutter.git -b stable --depth 1
+          cd flutter
+          git checkout 2ad6cd72c0  # Checkout specific commit for version 3.7.7
+          export PATH="$PATH:$(pwd)/bin"  # Add Flutter to PATH
+          flutter doctor  # Check Flutter installation
 
       - name: 🌍 Enable Web
         run: flutter config --enable-web
@@ -25,12 +28,11 @@ jobs:
       - name: 🏭 Build Web Application
         run: flutter build web --release
 
-      # (3)
       - name: Make copy of artifacts
         run: |
           chmod u+x "${GITHUB_WORKSPACE}/createandcopytofolder.sh"
           bash "${GITHUB_WORKSPACE}/createandcopytofolder.sh"
-      # (4)
+
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Commit the artifacts.
